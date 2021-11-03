@@ -1,6 +1,7 @@
 import socket
 import threading
-import pickle
+from time import sleep
+
 
 class Tello:
     def __init__(self, tello_ip: str='192.168.10.1', rc: bool=False):
@@ -23,6 +24,7 @@ class Tello:
     def command(self):
         self.send_command('command')
 
-    def command_rc(self, forward_back, left_right, up_down, yaw):
+    def command_rc(self, forward_back=0, left_right=0, up_down=0, yaw=0):
         if rc:
             self.send_command(f'rc {left_right} {forward_back} {up_down} {yaw}')
+            sleep(0.3)
