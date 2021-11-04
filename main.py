@@ -1,8 +1,7 @@
-from tello.drone import Tello
-from time import sleep
+from tello.drone import Tello, TelloRcControl
+import keyboard
 
-drone = Tello()
+drone = TelloRcControl()
 
-drone.send_command('takeoff')
-sleep(2)
-drone.send_command('land')
+while True:
+    drone.get_send_action(keyboard.read_key())

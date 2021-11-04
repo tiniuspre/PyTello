@@ -25,16 +25,16 @@ class Tello:
         self.send_command('command')
 
     def command_rc(self, forward_back=0, left_right=0, up_down=0, yaw=0):
-        if rc:
+        if self.rc:
             self.send_command(f'rc {left_right} {forward_back} {up_down} {yaw}')
-            sleep(0.3)
 
 
 class TelloRcControl:
     def __init__(self, speed=50):
         self.speed = speed
 
-        self.drone = Tello()
+        self.drone = Tello(rc=True)
+        self.drone.send_command('takeoff')
 
 
     def get_send_action(self, key_pressed):
@@ -42,25 +42,23 @@ class TelloRcControl:
         left_right = 0
         up_down = 0
         yaw = 0
-        for item in self.keys:
-            if key_pressed == self.values[item]:
-                if key_pressed == 'w':
-                    forward_back = self.speed
-                elif key_pressed == 's':
-                    forward_back = -abs(self.speed)
-                if key_pressed == 'a':
-                    left_right = self.speed
-                elif key_pressed == 'd':
-                    left_right = -abs(self.speed)
-                if key_pressed == 'r':
-                    up_down = self.speed
-                elif key_pressed == 'f':
-                    up_down = -abs(self.speed)
-                if key_pressed == 'q':
-                    yaw = self.speed
-                elif key_pressed == 'e':
-                    yaw = -abs(self.speed)
-            self.drone.command_rc(forward_back=forward_back,
+        if key_pressed == 'w':
+            forward_back = self.speed
+        elif key_pressed == 's':
+            forward_back = -abs(self.speed)
+        if key_pressed == 'a':
+            left_right = -abs(self.speed)
+        elif key_pressed == 'd':
+            left_right = self.speed
+        if key_pressed == 'r':
+            up_down = self.speed
+        elif key_pressed == 'f':
+            up_down = -abs(self.speed)
+        if key_pressed == 'q':
+            yaw = -abs(self.speed)
+        elif key_pressed == 'e':
+            yaw = self.speed
+        self.drone.command_rc(forward_back=forward_back,
                                   left_right=left_right,
                                   up_down=up_down,
                                   yaw=yaw
